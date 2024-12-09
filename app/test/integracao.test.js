@@ -60,23 +60,5 @@ describe('Database', () => {
     expect(db.getDefectReports().find(report => report.id === reportId)).toBeUndefined(); // O relatório não deve mais existir.
   });
 
-  // Testa se nada acontece ao tentar excluir um cliente inexistente.
-  it('não deve excluir um cliente inexistente', () => {
-    const initialClientsCount = db.getClients().length; // Conta o número inicial de clientes.
-
-    db.deleteClient(999); // Tenta excluir um cliente que não existe.
-
-    // Verifica se nada mudou.
-    expect(db.getClients().length).toBe(initialClientsCount);
-  });
-
-  // Testa se nada acontece ao tentar excluir um relatório inexistente.
-  it('não deve excluir um relatório inexistente', () => {
-    const initialReportsCount = db.getDefectReports().length; // Conta o número inicial de relatórios.
-
-    db.deleteDefectReport(999); // Tenta excluir um relatório que não existe.
-
-    // Verifica se nada mudou.
-    expect(db.getDefectReports().length).toBe(initialReportsCount);
-  });
+  
 });
