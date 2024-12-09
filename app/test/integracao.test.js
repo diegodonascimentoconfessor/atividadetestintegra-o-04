@@ -1,52 +1,82 @@
-import Database from '../database';
-import Cliente from './cliente';
+import Database from '../database'; // Importa a classe Database do arquivo correspondente.
 
-describe('Teste de Cliente', () => {
-    let database;
-    let clienteService;
+describe('Database', () => {
+  let db; // Variável que armazenará a instância do banco de dados.
 
-    beforeEach(() => {
-        database = new Database();
-        clienteService = new Cliente(database);
-    });
+  // Antes de cada teste, cria uma nova instância do banco de dados.
+  beforeEach(() => {
+    db = new Database();
+  });
 
-    test('Deve criar um novo cliente', () => {
-        const cliente = clienteService.createCliente('João');
-        expect(cliente).toEqual({ id: 1, nome: 'João' });
-        expect(database.getClientes()).toContainEqual(cliente);
-    });
+  // Testa se o banco de dados inicializa com uma lista de clientes.
+  it('deve inicializar com uma lista de clientes', () => {
+    expect(db.getClients().length).toBeGreaterThan(0); // Verifica se há pelo menos um cliente.
+  });
 
-    test('Deve listar todos os clientes', () => {
-        clienteService.createCliente('Maria');
-        clienteService.createCliente('Carlos');
-        const clientes = clienteService.listClientes();
-        expect(clientes).toHaveLength(2);
-    });
+  // Testa se é possível adicionar um novo cliente.
+  it('deve permitir adicionar um novo cliente', () => {
+    const newClient = { id: 7, name: 'Novo Cliente', phone: '111111111' }; // Define um novo cliente.
+    db.addClient(newClient); // Adiciona o cliente ao banco de dados.
+    expect(db.getClients()).toContainEqual(newClient); // Verifica se o cliente foi adicionado.
+  });
 
-    test('Deve criar um celular associado a um cliente', () => {
-        const cliente = clienteService.createCliente('Ana');
-        const celular = clienteService.createCelular(cliente.id, 'iPhone 13', 'Apple', 8000);
-        expect(celular).toEqual({
-            id: 1,
-            modelo: 'iPhone 13',
-            marca: 'Apple',
-            preco: 8000,
-            clienteId: cliente.id,
-        });
-    });
+  // Testa se os relatórios de defeitos iniciais são criados para cada cliente.
+  it('deve criar relatórios de defeitos iniciais para cada cliente', () => {
+    const reports = db.getDefectReports(); // Obtém a lista de relatórios.
+    expect(reports.length).toBe(db.getClients().length); // Verifica se o número de relatórios é igual ao número de clientes.
+  });
 
-    test('Deve lançar erro ao tentar criar um celular para cliente inexistente', () => {
-        expect(() =>
-            clienteService.createCelular(999, 'Galaxy S21', 'Samsung', 4000)
-        ).toThrow('Cliente com ID 999 não encontrado.');
-    });
+  // Testa se é possível adicionar relatórios de defeito manualmente.
+  it('deve adicionar relatórios de defeito manualmente', () => {
+    const newReport = { id: 1, clientId: 1, description: 'Defeito na tela' }; // Define um novo relatório.
+    db.addDefectReport(newReport); // Adiciona o relatório ao banco de dados.
+    expect(db.getDefectReports()).toContainEqual(newReport); // Verifica se o relatório foi adicionado.
+  });
 
-    test('Deve listar celulares associados a um cliente', () => {
-        const cliente = clienteService.createCliente('Lucas');
-        clienteService.createCelular(cliente.id, 'Galaxy S21', 'Samsung', 3500);
-        clienteService.createCelular(cliente.id, 'Pixel 6', 'Google', 5000);
+  // Testa se é possível excluir um cliente e seus relatórios associados.
+  it('deve excluir um cliente existente e seus relatórios associados', () => {
+    const initialClientsCount = db.getClients().length; // Conta o número inicial de clientes.
+    const clientId = db.getClients()[0].id; // Obtém o ID do primeiro cliente.
 
-        const celulares = clienteService.listCelularesByCliente(cliente.id);
-        expect(celulares).toHaveLength(2);
-    });
+    db.deleteClient(clientId); // Exclui o cliente.
+
+    // Verifica se o cliente foi removido.
+    expect(db.getClients().length).toBe(initialClientsCount - 1); // O número de clientes deve diminuir em 1.
+    expect(db.getClients().find(client => client.id === clientId)).toBeUndefined(); // O cliente não deve mais existir.
+
+    // Verifica se os relatórios associados ao cliente foram removidos.
+    expect(db.getDefectReports().some(report => report.clientId === clientId)).toBe(false);
+  });
+
+  // Testa se é possível excluir um relatório de defeito.
+  it('deve excluir um relatório de defeito existente', () => {
+    const initialReportsCount = db.getDefectReports().length; // Conta o número inicial de relatórios.
+    const reportId = db.getDefectReports()[0].id; // Obtém o ID do primeiro relatório.
+
+    db.deleteDefectReport(reportId); // Exclui o relatório.
+
+    // Verifica se o relatório foi removido.
+    expect(db.getDefectReports().length).toBe(initialReportsCount - 1); // O número de relatórios deve diminuir em 1.
+    expect(db.getDefectReports().find(report => report.id === reportId)).toBeUndefined(); // O relatório não deve mais existir.
+  });
+
+  // Testa se nada acontece ao tentar excluir um cliente inexistente.
+  it('não deve excluir um cliente inexistente', () => {
+    const initialClientsCount = db.getClients().length; // Conta o número inicial de clientes.
+
+    db.deleteClient(999); // Tenta excluir um cliente que não existe.
+
+    // Verifica se nada mudou.
+    expect(db.getClients().length).toBe(initialClientsCount);
+  });
+
+  // Testa se nada acontece ao tentar excluir um relatório inexistente.
+  it('não deve excluir um relatório inexistente', () => {
+    const initialReportsCount = db.getDefectReports().length; // Conta o número inicial de relatórios.
+
+    db.deleteDefectReport(999); // Tenta excluir um relatório que não existe.
+
+    // Verifica se nada mudou.
+    expect(db.getDefectReports().length).toBe(initialReportsCount);
+  });
 });
