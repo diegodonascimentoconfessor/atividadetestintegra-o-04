@@ -1,20 +1,11 @@
 class DefectReportService {
-  /**
-   * O construtor inicializa a classe com o banco de dados e o serviço de clientes.
-   * @param {Object} database - A instância do banco de dados.
-   * @param {Object} clientService - O serviço de clientes para validar e acessar informações.
-   */
+
   constructor(database, clientService) {
     this.database = database; // Armazena a referência ao banco de dados.
     this.clientService = clientService; // Armazena o serviço de clientes.
   }
 
-  /**
-   * Cria um relatório de defeito para um cliente específico.
-   * @param {number} clientId - ID do cliente associado ao relatório.
-   * @param {string} description - Descrição do defeito.
-   * @returns {Object} O relatório de defeito criado.
-   */
+
   createDefectReport(clientId, description) {
     // Busca o cliente pelo ID no banco de dados.
     const client = this.database.getClients().find(c => c.id === clientId);
@@ -41,8 +32,7 @@ class DefectReportService {
   }
 
   /**
-   * Exclui um relatório de defeito pelo ID.
-   * @param {number} reportId - ID do relatório a ser excluído.
+   o relatório a ser excluído.
    */
   deleteDefectReport(reportId) {
     // Verifica se o relatório existe no banco de dados.
@@ -60,10 +50,7 @@ class DefectReportService {
     console.log(`Relatório com ID ${reportId} excluído.`);
   }
 
-  /**
-   * Lista todos os relatórios de defeitos.
-   * @returns {Array} Lista de todos os relatórios de defeitos.
-   */
+
   listDefectReports() {
     // Retorna todos os relatórios armazenados no banco de dados.
     return this.database.getDefectReports();

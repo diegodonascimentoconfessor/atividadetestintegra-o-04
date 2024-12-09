@@ -19,25 +19,22 @@ class Database {
     }
   
     /**
-     * Adiciona um cliente à lista de clientes.
-     * @param {Object} client - Objeto contendo os dados do cliente.
+    
      */
     addClient(client) {
       this.clients.push(client); // Adiciona o cliente ao final do array.
     }
   
     /**
-     * Adiciona um relatório de defeito à lista de relatórios.
-     * @param {Object} report - Objeto contendo os dados do relatório.
+   
+    
      */
     addDefectReport(report) {
       this.defectReports.push(report); // Adiciona o relatório ao final do array.
     }
   
     /**
-     * Exclui um cliente pelo ID.
-     * Também remove os relatórios associados a esse cliente.
-     * @param {number} clientId - ID do cliente a ser excluído.
+     
      */
     deleteClient(clientId) {
       // Filtra os clientes e mantém apenas aqueles com IDs diferentes do informado.
@@ -48,26 +45,18 @@ class Database {
     }
   
     /**
-     * Exclui um relatório de defeito pelo ID.
-     * @param {number} reportId - ID do relatório a ser excluído.
+    
      */
     deleteDefectReport(reportId) {
       // Filtra os relatórios e mantém apenas aqueles com IDs diferentes do informado.
       this.defectReports = this.defectReports.filter(report => report.id !== reportId);
     }
   
-    /**
-     * Retorna a lista de clientes.
-     * @returns {Array} Lista de clientes.
-     */
     getClients() {
       return this.clients || []; // Retorna a lista de clientes ou um array vazio se não houver nenhum.
     }
   
-    /**
-     * Retorna a lista de relatórios de defeitos.
-     * @returns {Array} Lista de relatórios de defeitos.
-     */
+  
     getDefectReports() {
       return this.defectReports || []; // Retorna a lista de relatórios ou um array vazio se não houver nenhum.
     }
