@@ -51,7 +51,7 @@ class Cliente {
         }
 
         // Retorna os celulares associados ao cliente
-        return this.database.getCelulares().filter(celular => celular.clienteId === clienteId);
+        return this.database.getCelulares().filter(celular => celular.usuarioId === clienteId);
     }
 }
 

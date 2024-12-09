@@ -1,4 +1,4 @@
-import Database from './database';
+import Database from '../database';
 import Cliente from './cliente';
 
 describe('Teste de Cliente', () => {

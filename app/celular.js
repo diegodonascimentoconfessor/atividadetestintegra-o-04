@@ -4,11 +4,8 @@ class Celular {
         this.modelo = modelo;
         this.marca = marca;
         this.preco = preco;
-        this.usuarioId = usuarioId;  
+        this.usuarioId = usuarioId;
     }
 }
 
 export default Celular;
-
-
-
