@@ -4,7 +4,7 @@ class ClientService {
   }
 
   createClient(name, phone, brand, model) {
-    const id = Date.now(); // Cria um ID único para o cliente usando o tempo atual em milissegundos.
+    const id = Date.now(); // Cria um ID único para o cliente usando o tempo atual em milissegundos
     const client = { id, name, phone, brand, model }; // Cria um objeto representando o cliente com o ID, nome, telefone, marca e modelo.
     this.database.clients.push(client); // Adiciona o novo cliente à lista de clientes no banco de dados.
     return client; // Retorna o objeto do cliente criado.
