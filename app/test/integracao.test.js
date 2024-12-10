@@ -3,9 +3,16 @@ import Database from '../database'; // Importa a classe Database do arquivo corr
 describe('Database', () => {
   let db; // Variável que armazenará a instância do banco de dados.
 
-  // Antes de cada teste, cria uma nova instância do banco de dados.
+  // Antes de cada teste, cria uma nova instância do banco de dados e inicializa com dados de teste.
   beforeEach(() => {
     db = new Database();
+    
+    // Adiciona um cliente fictício e um relatório de defeito inicial para garantir que a lista não esteja vazia.
+    const defaultClient = { id: 1, name: 'Cliente 1', phone: '111111111', brand: 'Marca', model: 'Modelo' };
+    db.addClient(defaultClient);
+    
+    const defaultReport = { id: 1, clientId: 1, description: 'Defeito na tela', details: 'Relatório de defeito na tela do dispositivo.' };
+    db.addDefectReport(defaultReport);
   });
 
   // Testa se o banco de dados inicializa com uma lista de clientes.
@@ -15,7 +22,7 @@ describe('Database', () => {
 
   // Testa se é possível adicionar um novo cliente.
   it('deve permitir adicionar um novo cliente', () => {
-    const newClient = { id: 7, name: 'Novo Cliente', phone: '111111111' }; // Define um novo cliente.
+    const newClient = { id: 7, name: 'Novo Cliente', phone: '111111111', brand: 'Marca', model: 'Modelo' }; // Novo cliente.
     db.addClient(newClient); // Adiciona o cliente ao banco de dados.
     expect(db.getClients()).toContainEqual(newClient); // Verifica se o cliente foi adicionado.
   });
@@ -28,7 +35,7 @@ describe('Database', () => {
 
   // Testa se é possível adicionar relatórios de defeito manualmente.
   it('deve adicionar relatórios de defeito manualmente', () => {
-    const newReport = { id: 1, clientId: 1, description: 'Defeito na tela' }; // Define um novo relatório.
+    const newReport = { id: 2, clientId: 1, description: 'Defeito na tela', details: 'Relatório de defeito adicional.' }; // Novo relatório.
     db.addDefectReport(newReport); // Adiciona o relatório ao banco de dados.
     expect(db.getDefectReports()).toContainEqual(newReport); // Verifica se o relatório foi adicionado.
   });
@@ -60,5 +67,4 @@ describe('Database', () => {
     expect(db.getDefectReports().find(report => report.id === reportId)).toBeUndefined(); // O relatório não deve mais existir.
   });
 
-  
 });
